@@ -1,0 +1,178 @@
+.settings-page {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.settings-section {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.settings-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.settings-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.settings-label {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.settings-form select.input-field {
+  cursor: pointer;
+}
+
+.settings-form select.input-field option {
+  background: #1a1f3a;
+  color: var(--text-primary);
+}
+
+.settings-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.settings-actions .btn-primary,
+.settings-actions .btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-size: 0.875rem;
+}
+
+.saved-text {
+  font-size: 0.82rem;
+  color: #10b981;
+  font-weight: 500;
+  animation: fadeIn 300ms ease;
+}
+
+/* Goal Grid */
+.goal-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.goal-grid .option-card {
+  padding: 14px 8px;
+}
+
+/* Mode Switch */
+.mode-switch {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.mode-switch .mode-card {
+  text-align: center;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.mode-switch .mode-card strong {
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+.mode-switch .mode-card p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+/* TDEE Display */
+.tdee-display {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.tdee-display-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--radius-md);
+}
+
+.tdee-display-row span {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.tdee-display-row strong {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--text-primary);
+}
+
+/* Danger Zone */
+.danger-zone {
+  border-color: rgba(244, 63, 94, 0.2);
+}
+
+.danger-zone .settings-section-title {
+  color: var(--color-error);
+}
+
+.btn-danger {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  background: rgba(244, 63, 94, 0.12);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+  color: #fca5a5;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast) ease;
+}
+
+.btn-danger:hover {
+  background: rgba(244, 63, 94, 0.2);
+  color: #ef4444;
+}
+
+@media (max-width: 600px) {
+  .settings-row { grid-template-columns: 1fr; }
+  .goal-grid { grid-template-columns: repeat(3, 1fr); }
+  .mode-switch { grid-template-columns: 1fr; }
+  .settings-section { padding: 24px 20px; }
+}

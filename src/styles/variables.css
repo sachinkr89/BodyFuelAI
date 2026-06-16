@@ -1,0 +1,296 @@
+/* ============================================================
+   BodyFuel AI — Design Tokens (CSS Custom Properties)
+   Premium dark-mode design system
+   ============================================================ */
+
+:root {
+  /* ──────────────────────────────────────────────────────────
+     BACKGROUNDS
+     ────────────────────────────────────────────────────────── */
+  --bg-primary: #0a0e27;
+  --bg-secondary: #111638;
+  --bg-tertiary: #171d4a;
+  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card-hover: rgba(255, 255, 255, 0.08);
+  --bg-card-active: rgba(255, 255, 255, 0.1);
+  --bg-elevated: rgba(255, 255, 255, 0.06);
+  --bg-input: rgba(255, 255, 255, 0.04);
+  --bg-input-hover: rgba(255, 255, 255, 0.06);
+
+  /* ──────────────────────────────────────────────────────────
+     SURFACES  (glass / frosted layers)
+     ────────────────────────────────────────────────────────── */
+  --surface-glass: rgba(255, 255, 255, 0.03);
+  --surface-glass-medium: rgba(255, 255, 255, 0.06);
+  --surface-glass-heavy: rgba(255, 255, 255, 0.1);
+  --surface-overlay: rgba(10, 14, 39, 0.8);
+  --surface-scrim: rgba(10, 14, 39, 0.6);
+
+  /* ──────────────────────────────────────────────────────────
+     BORDERS
+     ────────────────────────────────────────────────────────── */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-default: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.15);
+  --border-focus: rgba(99, 102, 241, 0.5);
+
+  /* ──────────────────────────────────────────────────────────
+     GRADIENTS
+     ────────────────────────────────────────────────────────── */
+  --gradient-primary: linear-gradient(135deg, #6366f1 0%, #06b6d4 100%);
+  --gradient-primary-reverse: linear-gradient(135deg, #06b6d4 0%, #6366f1 100%);
+  --gradient-primary-vertical: linear-gradient(180deg, #6366f1 0%, #06b6d4 100%);
+  --gradient-secondary: linear-gradient(135deg, #10b981 0%, #34d399 100%);
+  --gradient-accent: linear-gradient(135deg, #f59e0b 0%, #f97316 100%);
+  --gradient-danger: linear-gradient(135deg, #f43f5e 0%, #ef4444 100%);
+  --gradient-purple: linear-gradient(135deg, #8b5cf6 0%, #a78bfa 100%);
+  --gradient-mesh: radial-gradient(
+      ellipse at 20% 50%,
+      rgba(99, 102, 241, 0.15) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 80% 20%,
+      rgba(6, 182, 212, 0.1) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at 50% 100%,
+      rgba(16, 185, 129, 0.08) 0%,
+      transparent 50%
+    );
+
+  /* ──────────────────────────────────────────────────────────
+     PRIMARY / BRAND COLORS
+     ────────────────────────────────────────────────────────── */
+  --color-primary: #6366f1;
+  --color-primary-light: #818cf8;
+  --color-primary-dark: #4f46e5;
+  --color-primary-alpha: rgba(99, 102, 241, 0.15);
+  --color-secondary: #06b6d4;
+  --color-secondary-light: #22d3ee;
+  --color-secondary-dark: #0891b2;
+  --color-secondary-alpha: rgba(6, 182, 212, 0.15);
+
+  /* ──────────────────────────────────────────────────────────
+     MACRO / NUTRIENT PALETTE
+     ────────────────────────────────────────────────────────── */
+  --color-protein: #6366f1;
+  --color-protein-light: #818cf8;
+  --color-protein-alpha: rgba(99, 102, 241, 0.18);
+  --color-carbs: #f59e0b;
+  --color-carbs-light: #fbbf24;
+  --color-carbs-alpha: rgba(245, 158, 11, 0.18);
+  --color-fats: #ef4444;
+  --color-fats-light: #f87171;
+  --color-fats-alpha: rgba(239, 68, 68, 0.18);
+  --color-fiber: #10b981;
+  --color-fiber-light: #34d399;
+  --color-fiber-alpha: rgba(16, 185, 129, 0.18);
+  --color-calories: #f97316;
+  --color-calories-light: #fb923c;
+  --color-calories-alpha: rgba(249, 115, 22, 0.18);
+  --color-water: #06b6d4;
+  --color-water-light: #22d3ee;
+  --color-water-alpha: rgba(6, 182, 212, 0.18);
+
+  /* ──────────────────────────────────────────────────────────
+     SEMANTIC / STATUS COLORS
+     ────────────────────────────────────────────────────────── */
+  --color-success: #10b981;
+  --color-success-light: #34d399;
+  --color-success-alpha: rgba(16, 185, 129, 0.15);
+  --color-warning: #f59e0b;
+  --color-warning-light: #fbbf24;
+  --color-warning-alpha: rgba(245, 158, 11, 0.15);
+  --color-error: #f43f5e;
+  --color-error-light: #fb7185;
+  --color-error-alpha: rgba(244, 63, 94, 0.15);
+  --color-info: #3b82f6;
+  --color-info-light: #60a5fa;
+  --color-info-alpha: rgba(59, 130, 246, 0.15);
+
+  /* ──────────────────────────────────────────────────────────
+     TEXT
+     ────────────────────────────────────────────────────────── */
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-disabled: #475569;
+  --text-inverse: #0a0e27;
+  --text-link: #818cf8;
+  --text-link-hover: #a5b4fc;
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — FONT FAMILIES
+     ────────────────────────────────────────────────────────── */
+  --font-body: 'Inter', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-heading: 'Outfit', ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+    sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco,
+    Consolas, 'Liberation Mono', 'Courier New', monospace;
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — FONT SIZES
+     ────────────────────────────────────────────────────────── */
+  --text-xs: 0.75rem;       /* 12px */
+  --text-sm: 0.875rem;      /* 14px */
+  --text-base: 1rem;        /* 16px */
+  --text-lg: 1.125rem;      /* 18px */
+  --text-xl: 1.25rem;       /* 20px */
+  --text-2xl: 1.5rem;       /* 24px */
+  --text-3xl: 1.875rem;     /* 30px */
+  --text-4xl: 2.25rem;      /* 36px */
+  --text-5xl: 3rem;         /* 48px */
+  --text-6xl: 3.75rem;      /* 60px */
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — LINE HEIGHTS
+     ────────────────────────────────────────────────────────── */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — FONT WEIGHTS
+     ────────────────────────────────────────────────────────── */
+  --font-light: 300;
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* ──────────────────────────────────────────────────────────
+     TYPOGRAPHY — LETTER SPACING
+     ────────────────────────────────────────────────────────── */
+  --tracking-tighter: -0.05em;
+  --tracking-tight: -0.025em;
+  --tracking-normal: 0em;
+  --tracking-wide: 0.025em;
+  --tracking-wider: 0.05em;
+  --tracking-widest: 0.1em;
+
+  /* ──────────────────────────────────────────────────────────
+     SPACING SCALE
+     ────────────────────────────────────────────────────────── */
+  --space-0: 0;
+  --space-px: 1px;
+  --space-0-5: 0.125rem;    /* 2px  */
+  --space-1: 0.25rem;       /* 4px  */
+  --space-1-5: 0.375rem;    /* 6px  */
+  --space-2: 0.5rem;        /* 8px  */
+  --space-2-5: 0.625rem;    /* 10px */
+  --space-3: 0.75rem;       /* 12px */
+  --space-3-5: 0.875rem;    /* 14px */
+  --space-4: 1rem;          /* 16px */
+  --space-5: 1.25rem;       /* 20px */
+  --space-6: 1.5rem;        /* 24px */
+  --space-7: 1.75rem;       /* 28px */
+  --space-8: 2rem;          /* 32px */
+  --space-9: 2.25rem;       /* 36px */
+  --space-10: 2.5rem;       /* 40px */
+  --space-11: 2.75rem;      /* 44px */
+  --space-12: 3rem;         /* 48px */
+  --space-14: 3.5rem;       /* 56px */
+  --space-16: 4rem;         /* 64px */
+  --space-18: 4.5rem;       /* 72px */
+  --space-20: 5rem;         /* 80px */
+  --space-24: 6rem;         /* 96px */
+  --space-28: 7rem;         /* 112px */
+  --space-32: 8rem;         /* 128px */
+
+  /* ──────────────────────────────────────────────────────────
+     BORDER RADIUS
+     ────────────────────────────────────────────────────────── */
+  --radius-none: 0;
+  --radius-sm: 0.375rem;    /* 6px  */
+  --radius-md: 0.5rem;      /* 8px  */
+  --radius-lg: 0.75rem;     /* 12px */
+  --radius-xl: 1rem;        /* 16px */
+  --radius-2xl: 1.5rem;     /* 24px */
+  --radius-3xl: 2rem;       /* 32px */
+  --radius-full: 9999px;
+
+  /* ──────────────────────────────────────────────────────────
+     SHADOWS
+     ────────────────────────────────────────────────────────── */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.4),
+    0 1px 2px -1px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4),
+    0 2px 4px -2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4),
+    0 4px 6px -4px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.5),
+    0 8px 10px -6px rgba(0, 0, 0, 0.5);
+  --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  --shadow-inner: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.3),
+    0 0 60px rgba(99, 102, 241, 0.1);
+  --shadow-glow-sm: 0 0 10px rgba(99, 102, 241, 0.2),
+    0 0 30px rgba(99, 102, 241, 0.05);
+  --shadow-glow-lg: 0 0 30px rgba(99, 102, 241, 0.4),
+    0 0 80px rgba(99, 102, 241, 0.15),
+    0 0 120px rgba(6, 182, 212, 0.08);
+  --shadow-glow-success: 0 0 20px rgba(16, 185, 129, 0.3),
+    0 0 60px rgba(16, 185, 129, 0.1);
+  --shadow-glow-error: 0 0 20px rgba(244, 63, 94, 0.3),
+    0 0 60px rgba(244, 63, 94, 0.1);
+  --shadow-glow-warning: 0 0 20px rgba(245, 158, 11, 0.3),
+    0 0 60px rgba(245, 158, 11, 0.1);
+
+  /* ──────────────────────────────────────────────────────────
+     TRANSITIONS
+     ────────────────────────────────────────────────────────── */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-base: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-spring: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ──────────────────────────────────────────────────────────
+     Z-INDEX SCALE
+     ────────────────────────────────────────────────────────── */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-fixed: 30;
+  --z-sidebar: 40;
+  --z-navbar: 50;
+  --z-modal-overlay: 60;
+  --z-modal: 70;
+  --z-popover: 80;
+  --z-tooltip: 90;
+  --z-toast: 100;
+
+  /* ──────────────────────────────────────────────────────────
+     LAYOUT
+     ────────────────────────────────────────────────────────── */
+  --sidebar-width: 280px;
+  --sidebar-width-collapsed: 72px;
+  --navbar-height: 64px;
+  --container-max: 1400px;
+  --container-sm: 640px;
+  --container-md: 768px;
+  --container-lg: 1024px;
+  --container-xl: 1280px;
+
+  /* ──────────────────────────────────────────────────────────
+     BACKDROP BLUR
+     ────────────────────────────────────────────────────────── */
+  --blur-sm: 4px;
+  --blur-md: 8px;
+  --blur-lg: 16px;
+  --blur-xl: 24px;
+  --blur-2xl: 40px;
+}

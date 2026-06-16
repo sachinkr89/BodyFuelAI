@@ -1,0 +1,16 @@
+.food-log-page {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.food-log-section {
+  margin-bottom: 32px;
+}
+
+.food-log-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}

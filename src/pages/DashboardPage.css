@@ -1,0 +1,185 @@
+.dashboard-page { 
+  animation: fadeIn 400ms ease; 
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.dashboard-greeting { margin-bottom: 32px; }
+.dashboard-greeting h1 {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.dashboard-greeting p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-top: 4px;
+}
+
+.dashboard-content {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.dashboard-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  animation: fadeInUp 500ms ease both;
+}
+
+.dashboard-card.delay-1 { animation-delay: 100ms; }
+.dashboard-card.delay-2 { animation-delay: 200ms; }
+.dashboard-card.delay-3 { animation-delay: 300ms; }
+
+.dashboard-card-title {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 20px;
+}
+
+.energy-section {
+  grid-template-columns: 1fr 1fr;
+}
+
+.nutrient-list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Protein Focus */
+.protein-focus-number {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.protein-focus-number .gradient-text {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 800;
+}
+
+.protein-target {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+/* Insight Banner */
+.insight-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 20px 24px;
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+  border-radius: var(--radius-lg);
+  animation: fadeInUp 500ms ease both;
+}
+
+.insight-banner.delay-2 { animation-delay: 200ms; }
+
+.insight-icon { color: #f59e0b; flex-shrink: 0; margin-top: 2px; }
+
+.insight-banner strong {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 4px;
+}
+
+.insight-banner p {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Badge */
+.badge {
+  display: inline-block;
+  padding: 4px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.badge-info {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60a5fa;
+}
+
+.badge-success {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34d399;
+}
+
+/* Supplement Cards */
+.supplement-row {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.supplement-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-lg);
+}
+
+.supplement-card strong {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  display: block;
+}
+
+.supplement-card p {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* Quick Add FAB */
+.quick-add-btn {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 60px;
+  height: 60px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, #6366f1, #06b6d4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  z-index: 50;
+  transition: all var(--transition-fast) ease;
+}
+
+.quick-add-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(99, 102, 241, 0.5);
+}
+
+@media (max-width: 768px) {
+  .energy-section { grid-template-columns: 1fr; }
+  .supplement-row { grid-template-columns: 1fr; }
+  .dashboard-greeting h1 { font-size: 1.4rem; }
+}
