@@ -18,6 +18,7 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const initialTextRef = useRef('');
 
   const handleVoice = () => {
     if (isRecording) {
@@ -29,9 +30,10 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
         return;
       }
       setIsRecording(true);
+      initialTextRef.current = text; // Save text before recording
       speechService.startListening(
         (result) => {
-          setText((prev) => (prev ? prev + ' ' + result : result));
+          setText(initialTextRef.current ? initialTextRef.current + ' ' + result : result);
         },
         (err) => {
           console.error(err);
