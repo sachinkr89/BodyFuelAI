@@ -32,9 +32,14 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
       speechService.startListening(
         (result) => {
           setText((prev) => (prev ? prev + ' ' + result : result));
+        },
+        (err) => {
+          console.error(err);
           setIsRecording(false);
         },
-        () => setIsRecording(false)
+        () => {
+          setIsRecording(false);
+        }
       );
     }
   };

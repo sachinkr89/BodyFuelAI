@@ -76,9 +76,11 @@ class SpeechService {
   startListening(
     onResult: (text: string) => void,
     onError: (err: string) => void,
+    onEnd: () => void,
   ): void {
     if (!this.isSupported()) {
       onError('Speech recognition is not supported in this browser.');
+      onEnd();
       return;
     }
 
@@ -94,7 +96,7 @@ class SpeechService {
     // Configure
     rec.lang = 'hi-IN'; // primary — Hindi (India)
     rec.continuous = false;
-    rec.interimResults = true;
+    rec.interimResults = false; // Only get final result to prevent duplicate appending
 
     // Event handlers
     rec.onresult = (event: SpeechRecognitionEvent) => {
@@ -143,6 +145,7 @@ class SpeechService {
 
     rec.onend = () => {
       this.isListening = false;
+      onEnd();
     };
 
     // Start
