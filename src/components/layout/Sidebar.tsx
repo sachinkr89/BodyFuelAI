@@ -8,6 +8,7 @@ import {
   ChevronRight,
   LogOut,
   Flame,
+  MessageSquare,
 } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 
@@ -21,6 +22,7 @@ interface SidebarProps {
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/log', icon: UtensilsCrossed, label: 'Food Log' },
+  { to: '/chat', icon: MessageSquare, label: 'AI Coach' },
   { to: '/forecast', icon: TrendingUp, label: 'Forecast' },
   { to: '/settings', icon: Settings, label: 'Settings' },
 ];

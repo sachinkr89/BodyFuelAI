@@ -187,7 +187,7 @@ export const useFoodLogStore = create<FoodLogState>((set, get) => ({
  * Recalculates the daily summary by summing all parsed macros
  * from today's food logs for the given user.
  */
-async function recalculateDailySummary(userId: string): Promise<void> {
+export async function recalculateDailySummary(userId: string): Promise<void> {
   try {
     const today = getTodayDateString();
     const startOfDay = `${today}T00:00:00.000Z`;

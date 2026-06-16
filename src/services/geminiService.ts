@@ -105,6 +105,20 @@ OUTPUT JSON SCHEMA
   ]
 }`;
 
+const CHAT_SYSTEM_PROMPT = `You are BodyFuel AI — an expert Indian nutritionist, fitness coach, and wellness assistant.
+
+GOALS:
+1. Help the user with their nutrition, recipe, calorie, workout, and health questions in a friendly, professional tone.
+2. If the user mentions eating or drinking something (e.g. "I ate 2 eggs and a banana"), you should:
+   - Provide a helpful breakdown of the estimated calories/macros of the meal.
+   - Output a special, structured JSON tag at the very end of your response so the UI can render a "Quick Log" button for them.
+   - The JSON block MUST be wrapped in special tags: <LOG_MEAL>{"items":[{"name":"string","quantity":"string","unit":"string","calories":number,"protein_g":number,"carbs_g":number,"fats_g":number,"fiber_g":number}],"totals":{"calories":number,"protein_g":number,"carbs_g":number,"fats_g":number,"fiber_g":number}}</LOG_MEAL>
+   - Do not mention the XML tags in your conversational text; just include them at the very end of your message.
+
+RULES:
+- Keep answers concise and actionable, tailored to Indian context/food (roti, dal, paneer, etc.) when appropriate.
+- If no foods are mentioned, do not output the <LOG_MEAL> block.`;
+
 // ───────── Helpers ─────────
 
 /**
@@ -328,5 +342,81 @@ Generate a 30-day health forecast with weight predictions, energy trend, nutrien
 
   throw new Error(
     `Failed to generate forecast: All AI models failed to respond. (Dev error: ${lastError?.message})`
+  );
+}
+
+/**
+ * Send a chat prompt to OpenRouter with conversation history.
+ */
+export async function sendChatPrompt(
+  messages: Array<{ role: 'user' | 'assistant'; content: string }>
+): Promise<string> {
+  const models = [
+    'google/gemma-4-31b-it:free',
+    'openrouter/free',
+    'liquid/lfm-2.5-1.2b-instruct:free',
+    'qwen/qwen3-coder:free',
+    'meta-llama/llama-3.2-3b-instruct:free'
+  ];
+
+  let lastError: Error | null = null;
+
+  // Format messages into OpenRouter message payload
+  const apiMessages = [
+    { role: 'system', content: CHAT_SYSTEM_PROMPT },
+    ...messages.map(msg => ({
+      role: msg.role === 'assistant' ? 'assistant' : 'user',
+      content: msg.content
+    }))
+  ];
+
+  for (const model of models) {
+    try {
+      console.log(`[sendChatPrompt] Trying model: ${model}`);
+      
+      if (!OPENROUTER_API_KEY) {
+        throw new Error(
+          'OpenRouter API key not configured. Set VITE_OPENROUTER_API_KEY in your environment.',
+        );
+      }
+
+      const response = await fetch(OPENROUTER_ENDPOINT, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+          'HTTP-Referer': window.location.origin,
+          'X-Title': 'BodyFuel AI',
+        },
+        body: JSON.stringify({
+          model: model, 
+          messages: apiMessages,
+          temperature: 0.3,
+          top_p: 0.8,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorBody = await response.text();
+        throw new Error(`OpenRouter API error (${response.status}): ${errorBody}`);
+      }
+
+      const data = await response.json();
+      const text: string | undefined = data?.choices?.[0]?.message?.content;
+
+      if (!text) {
+        throw new Error('OpenRouter returned an empty response.');
+      }
+
+      console.log(`[sendChatPrompt] Success with model: ${model}`);
+      return text;
+    } catch (err) {
+      console.warn(`[sendChatPrompt] Failed with model ${model}:`, err);
+      lastError = err instanceof Error ? err : new Error(String(err));
+    }
+  }
+
+  throw new Error(
+    `Failed to get response from AI Coach: All models failed. (Dev error: ${lastError?.message})`
   );
 }

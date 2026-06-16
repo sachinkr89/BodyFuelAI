@@ -11,6 +11,7 @@ interface NavbarProps {
 const routeTitles: Record<string, string> = {
   '/dashboard': 'Dashboard',
   '/log': 'Food Log',
+  '/chat': 'AI Coach',
   '/forecast': 'Forecast',
   '/settings': 'Settings',
 };

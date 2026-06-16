@@ -9,6 +9,7 @@ import DashboardPage from './pages/DashboardPage';
 import FoodLogPage from './pages/FoodLogPage';
 import ForecastPage from './pages/ForecastPage';
 import SettingsPage from './pages/SettingsPage';
+import ChatPage from './pages/ChatPage';
 
 function App() {
   const { isAuthenticated, isOnboarded, isLoading, initialize } = useAuthStore();
@@ -68,6 +69,7 @@ function App() {
         <Route path="log" element={<FoodLogPage />} />
         <Route path="forecast" element={<ForecastPage />} />
         <Route path="settings" element={<SettingsPage />} />
+        <Route path="chat" element={<ChatPage />} />
       </Route>
 
       {/* Catch all */}
