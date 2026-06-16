@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">BodyFuel AI</string>
+    <string name="title_activity_main">BodyFuel AI</string>
+    <string name="package_name">com.bodyfuel.ai</string>
+    <string name="custom_url_scheme">com.bodyfuel.ai</string>
+</resources>
