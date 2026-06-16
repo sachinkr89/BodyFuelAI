@@ -65,7 +65,10 @@ export default function Sidebar({
             <Flame size={collapsed ? 24 : 28} />
           </div>
           {!collapsed && (
-            <span className="sidebar-logo-text">BodyFuel AI</span>
+            <div className="sidebar-logo-text">
+              <h2>BodyFuel</h2>
+              <span>AI</span>
+            </div>
           )}
         </div>
 

@@ -72,6 +72,8 @@
 }
 
 .sidebar-logo-text {
+  display: flex;
+  flex-direction: column;
   transition: opacity var(--transition-base) ease;
 }
 
@@ -84,12 +86,14 @@
   -webkit-text-fill-color: transparent;
   background-clip: text;
   line-height: 1.2;
+  margin: 0;
 }
 
 .sidebar-logo-text span {
   font-size: 0.7rem;
   color: var(--text-muted);
   letter-spacing: 0.5px;
+  margin-top: 1px;
 }
 
 /* Navigation */
