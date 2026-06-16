@@ -1058,7 +1058,7 @@ hr {
 }
 
 /* Collapsed sidebar */
-.sidebar-collapsed {
+.sidebar-collapsed .sidebar {
   width: var(--sidebar-width-collapsed);
 }
 

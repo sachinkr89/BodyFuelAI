@@ -4,6 +4,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { getGreeting } from '../../utils/helpers';
 
 interface NavbarProps {
+  collapsed: boolean;
   onMenuClick: () => void;
 }
 
@@ -14,7 +15,7 @@ const routeTitles: Record<string, string> = {
   '/settings': 'Settings',
 };
 
-export default function Navbar({ onMenuClick }: NavbarProps) {
+export default function Navbar({ collapsed, onMenuClick }: NavbarProps) {
   const location = useLocation();
   const { profile } = useAuthStore();
 
@@ -24,7 +25,7 @@ export default function Navbar({ onMenuClick }: NavbarProps) {
   const bodyMode = profile?.body_mode || 'general';
 
   return (
-    <header className="navbar">
+    <header className={`navbar ${collapsed ? 'navbar-with-sidebar-collapsed' : 'navbar-with-sidebar'}`}>
       <div className="navbar-left">
         <button
           className="menu-btn"

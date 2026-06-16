@@ -32,7 +32,7 @@
 }
 
 .sidebar.collapsed {
-  width: 80px;
+  width: var(--sidebar-width-collapsed);
 }
 
 .sidebar.collapsed .nav-link-label,
@@ -264,7 +264,7 @@
 
 /* ---- Navbar ---- */
 .navbar {
-  height: 72px;
+  height: var(--navbar-height);
   padding: 0 32px;
   display: flex;
   align-items: center;
@@ -273,9 +273,11 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  position: sticky;
+  position: fixed;
   top: 0;
-  z-index: 30;
+  right: 0;
+  z-index: var(--z-navbar);
+  transition: all var(--transition-base) ease;
 }
 
 .navbar-left {
@@ -371,6 +373,7 @@
 .main-content {
   flex: 1;
   padding: 32px;
+  padding-top: calc(var(--navbar-height) + 32px);
   overflow-y: auto;
 }
 
@@ -479,6 +482,7 @@
 
   .main-content {
     padding: 20px 16px;
+    padding-top: calc(var(--navbar-height) + 20px);
   }
 
   .navbar-greeting {
