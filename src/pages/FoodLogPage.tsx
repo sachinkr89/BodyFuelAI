@@ -15,9 +15,9 @@ export default function FoodLogPage() {
     if (profile?.id) fetchTodaysLogs(profile.id);
   }, [profile?.id]);
 
-  const handleSubmit = async (text: string, mealType: MealType) => {
+  const handleSubmit = async (text: string, mealType: MealType, imageBase64?: string) => {
     if (profile?.id) {
-      const { error } = await logFood(text, mealType, profile.id);
+      const { error } = await logFood(text, mealType, profile.id, imageBase64);
       if (error) {
         const errorMsg = error.message || String(error);
         alert(`AI Analysis failed:\n\n${errorMsg}\n\nPlease share this error so I can fix it!`);

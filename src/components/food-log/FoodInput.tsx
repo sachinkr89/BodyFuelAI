@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { Mic, MicOff, Sparkles, Loader2 } from 'lucide-react';
+import { useState, useRef } from 'react';
+import { Mic, MicOff, Sparkles, Loader2, Camera, X } from 'lucide-react';
 import { MEAL_TYPES } from '../../utils/constants';
 import { getMealTypeFromTime } from '../../utils/helpers';
 import { speechService } from '../../services/speechService';
@@ -7,7 +7,7 @@ import type { MealType } from '../../types';
 import './FoodLog.css';
 
 interface FoodInputProps {
-  onSubmit: (text: string, mealType: MealType) => void;
+  onSubmit: (text: string, mealType: MealType, imageBase64?: string) => void;
   isLoading?: boolean;
 }
 
@@ -15,6 +15,9 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
   const [text, setText] = useState('');
   const [mealType, setMealType] = useState<MealType>(getMealTypeFromTime());
   const [isRecording, setIsRecording] = useState(false);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleVoice = () => {
     if (isRecording) {
@@ -36,23 +39,62 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
     }
   };
 
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image size must be less than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setImagePreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const removeImage = () => {
+    setImagePreview(null);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
   const handleSubmit = () => {
-    if (!text.trim() || isLoading) return;
-    onSubmit(text.trim(), mealType);
+    if ((!text.trim() && !imagePreview) || isLoading) return;
+    onSubmit(text.trim(), mealType, imagePreview || undefined);
   };
 
   return (
     <div className="food-input-container">
       <div className="food-input-header">
         <h3 className="food-input-title">What did you eat?</h3>
-        <button
-          className={`voice-btn ${isRecording ? 'recording' : ''}`}
-          onClick={handleVoice}
-          type="button"
-          title={isRecording ? 'Stop recording' : 'Start voice input'}
-        >
-          {isRecording ? <MicOff size={20} /> : <Mic size={20} />}
-        </button>
+        <div className="food-input-tools">
+          <input 
+            type="file" 
+            accept="image/*" 
+            capture="environment" 
+            ref={fileInputRef} 
+            onChange={handleImageSelect} 
+            style={{ display: 'none' }} 
+          />
+          <button
+            className="tool-btn"
+            onClick={() => fileInputRef.current?.click()}
+            type="button"
+            title="Take a photo"
+          >
+            <Camera size={20} />
+          </button>
+          <button
+            className={`tool-btn ${isRecording ? 'recording' : ''}`}
+            onClick={handleVoice}
+            type="button"
+            title={isRecording ? 'Stop recording' : 'Start voice input'}
+          >
+            {isRecording ? <MicOff size={20} /> : <Mic size={20} />}
+          </button>
+        </div>
       </div>
 
       {isRecording && (
@@ -62,12 +104,21 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
         </div>
       )}
 
+      {imagePreview && (
+        <div className="image-preview-container animate-fade-in">
+          <img src={imagePreview} alt="Food preview" className="image-preview" />
+          <button className="remove-image-btn" onClick={removeImage} type="button">
+            <X size={16} />
+          </button>
+        </div>
+      )}
+
       <textarea
         className="food-textarea"
-        placeholder="Describe your meal... (e.g., 2 ande aur 1 roti with butter)"
+        placeholder={imagePreview ? "Add any extra details (e.g., 'cooked in butter')..." : "Describe your meal... (e.g., 2 ande aur 1 roti with butter)"}
         value={text}
         onChange={(e) => setText(e.target.value)}
-        rows={4}
+        rows={3}
         disabled={isLoading}
       />
 
@@ -87,7 +138,7 @@ export default function FoodInput({ onSubmit, isLoading }: FoodInputProps) {
         <button
           className="btn-primary analyze-btn"
           onClick={handleSubmit}
-          disabled={!text.trim() || isLoading}
+          disabled={(!text.trim() && !imagePreview) || isLoading}
         >
           {isLoading ? (
             <><Loader2 size={18} className="animate-spin" /> Analyzing...</>

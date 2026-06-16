@@ -136,12 +136,21 @@ function extractJSON(raw: string): string {
 /**
  * Call the OpenRouter REST endpoint.
  */
-async function callOpenRouter(systemPrompt: string, userPrompt: string): Promise<string> {
+async function callOpenRouter(systemPrompt: string, userPrompt: string, imageBase64?: string): Promise<string> {
   if (!OPENROUTER_API_KEY) {
     throw new Error(
       'OpenRouter API key not configured. Set VITE_OPENROUTER_API_KEY in your environment.',
     );
   }
+
+  const userMessageContent = imageBase64 
+    ? [
+        { type: 'text', text: userPrompt },
+        { type: 'image_url', image_url: { url: imageBase64 } }
+      ]
+    : userPrompt;
+
+  const model = imageBase64 ? 'nvidia/nemotron-nano-12b-v2-vl:free' : 'google/gemma-4-31b-it:free';
 
   const response = await fetch(OPENROUTER_ENDPOINT, {
     method: 'POST',
@@ -152,10 +161,10 @@ async function callOpenRouter(systemPrompt: string, userPrompt: string): Promise
       'X-Title': 'BodyFuel AI', // Required by OpenRouter
     },
     body: JSON.stringify({
-      model: 'google/gemma-4-31b-it:free', // Using extremely fast and stable model (1s latency) to maximize user speed
+      model: model, 
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: userPrompt }
+        { role: 'user', content: userMessageContent }
       ],
       temperature: 0.3,
       top_p: 0.8,
@@ -185,10 +194,15 @@ async function callOpenRouter(systemPrompt: string, userPrompt: string): Promise
 /**
  * Parse a free-text food description into structured nutritional data.
  */
-export async function parseFoodInput(text: string): Promise<GeminiParsedResponse> {
+export async function parseFoodInput(text: string, imageBase64?: string): Promise<GeminiParsedResponse> {
+  const promptText = imageBase64 && !text 
+    ? "Analyze the food in this image and return the nutritional breakdown."
+    : `Parse the following food entry and return the nutritional breakdown:\n\n"${text}"`;
+
   const raw = await callOpenRouter(
     FOOD_PARSING_SYSTEM_PROMPT,
-    `Parse the following food entry and return the nutritional breakdown:\n\n"${text}"`,
+    promptText,
+    imageBase64
   );
 
   const json = extractJSON(raw);

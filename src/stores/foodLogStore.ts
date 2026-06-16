@@ -10,7 +10,7 @@ interface FoodLogState {
   isParsing: boolean;
   lastParsedResult: GeminiParsedResponse | null;
 
-  logFood: (rawText: string, mealType: MealType, userId: string) => Promise<{ error: any }>;
+  logFood: (rawText: string, mealType: MealType, userId: string, imageBase64?: string) => Promise<{ error: any }>;
   fetchTodaysLogs: (userId: string) => Promise<void>;
   fetchTodaysSummary: (userId: string) => Promise<void>;
   deleteLog: (logId: string, userId: string) => Promise<void>;
@@ -28,12 +28,12 @@ export const useFoodLogStore = create<FoodLogState>((set, get) => ({
   isParsing: false,
   lastParsedResult: null,
 
-  logFood: async (rawText: string, mealType: MealType, userId: string) => {
+  logFood: async (rawText: string, mealType: MealType, userId: string, imageBase64?: string) => {
     try {
       set({ isParsing: true, isLogging: true });
 
-      // Step 1: Parse the food input via Gemini AI
-      const parsedResult = await parseFoodInput(rawText);
+      // Step 1: Parse the food input via Gemini AI (supports image base64)
+      const parsedResult = await parseFoodInput(rawText, imageBase64);
       set({ lastParsedResult: parsedResult, isParsing: false });
 
       if (!parsedResult || !parsedResult.items || parsedResult.items.length === 0) {
