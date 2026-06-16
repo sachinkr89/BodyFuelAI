@@ -136,7 +136,15 @@ function extractJSON(raw: string): string {
 /**
  * Call the OpenRouter REST endpoint.
  */
-async function callOpenRouter(systemPrompt: string, userPrompt: string, imageBase64?: string): Promise<string> {
+/**
+ * Call the OpenRouter REST endpoint for a single specific model.
+ */
+async function callOpenRouterSingle(
+  model: string,
+  systemPrompt: string,
+  userPrompt: string,
+  imageBase64?: string
+): Promise<string> {
   if (!OPENROUTER_API_KEY) {
     throw new Error(
       'OpenRouter API key not configured. Set VITE_OPENROUTER_API_KEY in your environment.',
@@ -149,8 +157,6 @@ async function callOpenRouter(systemPrompt: string, userPrompt: string, imageBas
         { type: 'image_url', image_url: { url: imageBase64 } }
       ]
     : userPrompt;
-
-  const model = imageBase64 ? 'nvidia/nemotron-nano-12b-v2-vl:free' : 'google/gemma-4-31b-it:free';
 
   const response = await fetch(OPENROUTER_ENDPOINT, {
     method: 'POST',
@@ -177,7 +183,6 @@ async function callOpenRouter(systemPrompt: string, userPrompt: string, imageBas
   }
 
   const data = await response.json();
-
   const text: string | undefined = data?.choices?.[0]?.message?.content;
 
   if (!text) {
@@ -199,41 +204,57 @@ export async function parseFoodInput(text: string, imageBase64?: string): Promis
     ? "Analyze the food in this image and return the nutritional breakdown."
     : `Parse the following food entry and return the nutritional breakdown:\n\n"${text}"`;
 
-  const raw = await callOpenRouter(
-    FOOD_PARSING_SYSTEM_PROMPT,
-    promptText,
-    imageBase64
-  );
+  const models = imageBase64 
+    ? ['nvidia/nemotron-nano-12b-v2-vl:free'] 
+    : [
+        'google/gemma-4-31b-it:free',
+        'openrouter/free',
+        'liquid/lfm-2.5-1.2b-instruct:free',
+        'qwen/qwen3-coder:free',
+        'meta-llama/llama-3.2-3b-instruct:free'
+      ];
 
-  const json = extractJSON(raw);
+  let lastError: Error | null = null;
 
-  try {
-    const parsed = JSON.parse(json) as GeminiParsedResponse;
+  for (const model of models) {
+    try {
+      console.log(`[parseFoodInput] Trying model: ${model}`);
+      const raw = await callOpenRouterSingle(model, FOOD_PARSING_SYSTEM_PROMPT, promptText, imageBase64);
+      const json = extractJSON(raw);
+      const parsed = JSON.parse(json) as GeminiParsedResponse;
 
-    // Sanity-check required fields and provide defaults
-    return {
-      items: Array.isArray(parsed.items) ? parsed.items : [],
-      totals: {
-        calories: parsed.totals?.calories ?? 0,
-        protein_g: parsed.totals?.protein_g ?? 0,
-        carbs_g: parsed.totals?.carbs_g ?? 0,
-        fats_g: parsed.totals?.fats_g ?? 0,
-        fiber_g: parsed.totals?.fiber_g ?? 0,
-        sugar_g: parsed.totals?.sugar_g ?? 0,
-        iron_mg: parsed.totals?.iron_mg ?? 0,
-        calcium_mg: parsed.totals?.calcium_mg ?? 0,
-        vitamin_d_mcg: parsed.totals?.vitamin_d_mcg ?? 0,
-        sodium_mg: parsed.totals?.sodium_mg ?? 0,
-        water_ml: parsed.totals?.water_ml ?? 0,
-      },
-      confidence: parsed.confidence ?? 0.5,
-      assumptions: Array.isArray(parsed.assumptions) ? parsed.assumptions : [],
-    };
-  } catch (err) {
-    throw new Error(
-      `The AI could not extract the nutrition data. If you used an image or voice, please try again or type more details. (Dev: ${err instanceof Error ? err.message : String(err)})`,
-    );
+      if (!parsed || !parsed.items || parsed.items.length === 0) {
+        throw new Error('Parsed response missing items');
+      }
+
+      console.log(`[parseFoodInput] Success with model: ${model}`);
+      return {
+        items: Array.isArray(parsed.items) ? parsed.items : [],
+        totals: {
+          calories: parsed.totals?.calories ?? 0,
+          protein_g: parsed.totals?.protein_g ?? 0,
+          carbs_g: parsed.totals?.carbs_g ?? 0,
+          fats_g: parsed.totals?.fats_g ?? 0,
+          fiber_g: parsed.totals?.fiber_g ?? 0,
+          sugar_g: parsed.totals?.sugar_g ?? 0,
+          iron_mg: parsed.totals?.iron_mg ?? 0,
+          calcium_mg: parsed.totals?.calcium_mg ?? 0,
+          vitamin_d_mcg: parsed.totals?.vitamin_d_mcg ?? 0,
+          sodium_mg: parsed.totals?.sodium_mg ?? 0,
+          water_ml: parsed.totals?.water_ml ?? 0,
+        },
+        confidence: parsed.confidence ?? 0.5,
+        assumptions: Array.isArray(parsed.assumptions) ? parsed.assumptions : [],
+      };
+    } catch (err) {
+      console.warn(`[parseFoodInput] Failed with model ${model}:`, err);
+      lastError = err instanceof Error ? err : new Error(String(err));
+    }
   }
+
+  throw new Error(
+    `All AI models failed to extract valid nutrition data. If you used an image or voice, please try again or type more details. (Dev error: ${lastError?.message})`
+  );
 }
 
 /**
@@ -259,37 +280,53 @@ ${JSON.stringify(summaries.slice(0, 30), null, 2)}
 
 Generate a 30-day health forecast with weight predictions, energy trend, nutrient alerts, and a motivating insight message.`;
 
-  const raw = await callOpenRouter(HEALTH_FORECAST_SYSTEM_PROMPT, userPrompt);
-  const json = extractJSON(raw);
+  const models = [
+    'google/gemma-4-31b-it:free',
+    'openrouter/free',
+    'liquid/lfm-2.5-1.2b-instruct:free',
+    'qwen/qwen3-coder:free',
+    'meta-llama/llama-3.2-3b-instruct:free'
+  ];
 
-  try {
-    const parsed = JSON.parse(json) as {
-      predicted_weight_kg: number | null;
-      predicted_energy_trend: 'improving' | 'stable' | 'declining';
-      insight_message: string;
-      forecast_data: ForecastDataPoint[];
-      alerts: MicroNutrientAlert[];
-    };
+  let lastError: Error | null = null;
 
-    const now = new Date().toISOString();
+  for (const model of models) {
+    try {
+      console.log(`[generateHealthForecast] Trying model: ${model}`);
+      const raw = await callOpenRouterSingle(model, HEALTH_FORECAST_SYSTEM_PROMPT, userPrompt);
+      const json = extractJSON(raw);
+      const parsed = JSON.parse(json) as {
+        predicted_weight_kg: number | null;
+        predicted_energy_trend: 'improving' | 'stable' | 'declining';
+        insight_message: string;
+        forecast_data: ForecastDataPoint[];
+        alerts: MicroNutrientAlert[];
+      };
 
-    return {
-      id: crypto.randomUUID(),
-      user_id: profile.id,
-      date_generated: now,
-      forecast_days: 30,
-      predicted_weight_kg: parsed.predicted_weight_kg ?? null,
-      predicted_energy_trend: parsed.predicted_energy_trend ?? 'stable',
-      insight_message:
-        parsed.insight_message ?? 'Keep tracking your meals for a more accurate forecast.',
-      forecast_data: Array.isArray(parsed.forecast_data)
-        ? parsed.forecast_data
-        : [],
-      alerts: Array.isArray(parsed.alerts) ? parsed.alerts : [],
-    };
-  } catch (err) {
-    throw new Error(
-      `Failed to parse Gemini forecast response as JSON: ${err instanceof Error ? err.message : String(err)}`,
-    );
+      const now = new Date().toISOString();
+
+      console.log(`[generateHealthForecast] Success with model: ${model}`);
+      return {
+        id: crypto.randomUUID(),
+        user_id: profile.id,
+        date_generated: now,
+        forecast_days: 30,
+        predicted_weight_kg: parsed.predicted_weight_kg ?? null,
+        predicted_energy_trend: parsed.predicted_energy_trend ?? 'stable',
+        insight_message:
+          parsed.insight_message ?? 'Keep tracking your meals for a more accurate forecast.',
+        forecast_data: Array.isArray(parsed.forecast_data)
+          ? parsed.forecast_data
+          : [],
+        alerts: Array.isArray(parsed.alerts) ? parsed.alerts : [],
+      };
+    } catch (err) {
+      console.warn(`[generateHealthForecast] Failed with model ${model}:`, err);
+      lastError = err instanceof Error ? err : new Error(String(err));
+    }
   }
+
+  throw new Error(
+    `Failed to generate forecast: All AI models failed to respond. (Dev error: ${lastError?.message})`
+  );
 }
