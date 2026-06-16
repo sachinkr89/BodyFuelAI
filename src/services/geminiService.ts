@@ -231,7 +231,7 @@ export async function parseFoodInput(text: string, imageBase64?: string): Promis
     };
   } catch (err) {
     throw new Error(
-      `Failed to parse Gemini food response as JSON: ${err instanceof Error ? err.message : String(err)}`,
+      `The AI could not extract the nutrition data. If you used an image or voice, please try again or type more details. (Dev: ${err instanceof Error ? err.message : String(err)})`,
     );
   }
 }

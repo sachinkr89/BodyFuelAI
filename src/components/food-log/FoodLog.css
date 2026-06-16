@@ -41,6 +41,7 @@
   align-items: center;
   justify-content: center;
   transition: all var(--transition-fast) ease;
+  flex-shrink: 0;
 }
 
 .tool-btn:hover {
