@@ -442,6 +442,10 @@
     transform: translateX(-100%);
     z-index: 60;
     transition: transform var(--transition-base) ease;
+    background: #0a0e27 !important; /* Solid dark background to prevent layout overlapping on mobile */
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.4);
   }
 
   .sidebar.mobile-open {
