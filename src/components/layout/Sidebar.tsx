@@ -50,9 +50,10 @@ export default function Sidebar({
   return (
     <>
       {/* Mobile backdrop overlay */}
-      {mobileOpen && (
-        <div className="sidebar-backdrop" onClick={onMobileClose} />
-      )}
+      <div
+        className={`sidebar-overlay ${mobileOpen ? 'visible' : ''}`}
+        onClick={onMobileClose}
+      />
 
       <aside
         className={`sidebar ${collapsed ? 'collapsed' : ''} ${

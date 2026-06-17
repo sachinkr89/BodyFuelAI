@@ -17,7 +17,11 @@ export default function Layout() {
         onMobileClose={() => setMobileSidebarOpen(false)}
       />
       <div className="main-area">
-        <Navbar collapsed={sidebarCollapsed} onMenuClick={() => setMobileSidebarOpen(true)} />
+        <Navbar
+          collapsed={sidebarCollapsed}
+          mobileOpen={mobileSidebarOpen}
+          onMenuClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+        />
         <main className={`main-content ${sidebarCollapsed ? 'main-content-collapsed' : ''}`}>
           <Outlet />
         </main>

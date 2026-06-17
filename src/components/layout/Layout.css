@@ -482,6 +482,14 @@
 
   .menu-btn {
     display: flex;
+    position: fixed !important;
+    top: 12px;
+    left: 16px;
+    z-index: 70;
+  }
+
+  .sidebar-logo {
+    padding-left: 56px !important;
   }
 
   .navbar {

@@ -1,10 +1,11 @@
 import { useLocation } from 'react-router-dom';
-import { Menu, Bell } from 'lucide-react';
+import { Menu, X, Bell } from 'lucide-react';
 import { useAuthStore } from '../../stores/authStore';
 import { getGreeting } from '../../utils/helpers';
 
 interface NavbarProps {
   collapsed: boolean;
+  mobileOpen: boolean;
   onMenuClick: () => void;
 }
 
@@ -16,7 +17,7 @@ const routeTitles: Record<string, string> = {
   '/settings': 'Settings',
 };
 
-export default function Navbar({ collapsed, onMenuClick }: NavbarProps) {
+export default function Navbar({ collapsed, mobileOpen, onMenuClick }: NavbarProps) {
   const location = useLocation();
   const { profile } = useAuthStore();
 
@@ -31,9 +32,9 @@ export default function Navbar({ collapsed, onMenuClick }: NavbarProps) {
         <button
           className="menu-btn"
           onClick={onMenuClick}
-          aria-label="Open menu"
+          aria-label={mobileOpen ? 'Close menu' : 'Open menu'}
         >
-          <Menu size={22} />
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
         <div className="navbar-title-group">
           <h1 className="navbar-title">{pageTitle}</h1>
